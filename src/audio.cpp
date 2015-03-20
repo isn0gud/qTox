@@ -247,9 +247,12 @@ void Audio::playMono16Sound(const QByteArray& data, bool loop)
 
 void Audio::stopSound()
 {
+<<<<<<< HEAD
     QMutexLocker lock(audioOutLock);
     if (!alOutDev)
         return;
+=======
+>>>>>>> 025e66fc8cd9b884b426611b5dec6bb2610aeddc
     alSourceStop(alMainSource);
 }
 
