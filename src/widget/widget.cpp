@@ -739,12 +739,22 @@ void Widget::playRingtone()
         return;
     QApplication::alert(this);
 
+    static QFile sndFile1(":audio/ToxicIncomingCall.pcm"); // for whatever reason this plays slower/downshifted from what any other program plays the file as... but whatever
+    static QByteArray sndData1;
+    if (sndData1.isEmpty())
+    {
+        sndFile1.open(QIODevice::ReadOnly);
+        sndData1 = sndFile1.readAll();
+        sndFile1.close();
+    }
+
     QThread *ringerThread = new QThread;
-    Ringer *ringer = new Ringer;
+    Ringer *ringer = new Ringer(&sndData1);
     ringer->moveToThread(ringerThread);
     Core* core = Nexus::getCore();
     connect(ringerThread, &QThread::started, ringer, &Ringer::start);
     connect(core, &Core::avStart, ringer, &Ringer::stop);
+    connect(core, &Core::avCancel, ringer, &Ringer::stop);
     connect(core, &Core::avEnd, ringer, &Ringer::stop);
     connect(ringer, &Ringer::stopped, ringerThread, &QThread::quit);
     connect(ringer, &Ringer::stopped, ringer, &Ringer::deleteLater);
