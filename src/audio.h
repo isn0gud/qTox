@@ -57,7 +57,8 @@ public:
     static bool isInputReady(); ///< Returns true if the input device is open and suscribed to
     static bool isOutputClosed(); ///< Returns true if the output device is open
 
-    static void playMono16Sound(const QByteArray& data); ///< Play a 44100Hz mono 16bit PCM sound
+    static void playMono16Sound(const QByteArray& data, bool loop = false); ///< Play a 44100Hz mono 16bit PCM sound
+    static void stopSound(); ///< S
     static bool tryCaptureSamples(uint8_t* buf, int framesize); ///< Does nothing and return false on failure
 
     /// May be called from any thread, will always queue a call to playGroupAudio

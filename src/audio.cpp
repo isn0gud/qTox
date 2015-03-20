@@ -227,7 +227,7 @@ void Audio::closeOutput()
     }
 }
 
-void Audio::playMono16Sound(const QByteArray& data)
+void Audio::playMono16Sound(const QByteArray& data, bool loop)
 {
     QMutexLocker lock(audioOutLock);
     if (!alOutDev)
@@ -237,8 +237,17 @@ void Audio::playMono16Sound(const QByteArray& data)
     alGenBuffers(1, &buffer);
     alBufferData(buffer, AL_FORMAT_MONO16, data.data(), data.size(), 44100);
     alSourcei(alMainSource, AL_BUFFER, buffer);
+    if (loop)
+    {
+        alSourcei(alMainSource, AL_LOOPING,  AL_TRUE  );
+    }
     alSourcePlay(alMainSource);
     alDeleteBuffers(1, &buffer);
+}
+
+void Audio::stopSound()
+{
+    alSourceStop(alMainSource);
 }
 
 void Audio::playGroupAudioQueued(Tox*,int group, int peer, const int16_t* data,

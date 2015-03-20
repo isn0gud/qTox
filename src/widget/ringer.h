@@ -8,7 +8,7 @@ class Ringer : public QObject
 {
     Q_OBJECT
 public:
-    explicit Ringer(QObject *parent = 0);
+    explicit Ringer(QByteArray *sndData,QObject *parent = 0);
     ~Ringer();
 
 signals:
@@ -17,14 +17,9 @@ signals:
 public slots:
     void start();
     void stop();
-private slots:
-    void playRingSound();
 
 private:
-    QTimer *timer;
-    bool ringing;
-
-
+    QByteArray *sndData;
 };
 
 #endif // RINGER_H
